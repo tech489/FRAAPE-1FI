@@ -104,7 +104,14 @@ services:
     networks:
       - frappe_network
     depends_on:
-      - websocket
+      websocket:
+        condition: service_started
+      db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_started
+      redis-queue:
+        condition: service_started
     deploy:
       restart_policy:
         condition: on-failure
@@ -129,6 +136,13 @@ services:
     image: frappe/erpnext:${ERPNEXT_VERSION:-v15.95.0}
     networks:
       - frappe_network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis-queue:
+        condition: service_started
+      redis-cache:
+        condition: service_started
     deploy:
       restart_policy:
         condition: on-failure
@@ -148,6 +162,13 @@ services:
     image: frappe/erpnext:${ERPNEXT_VERSION:-v15.95.0}
     networks:
       - frappe_network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis-queue:
+        condition: service_started
+      redis-cache:
+        condition: service_started
     deploy:
       restart_policy:
         condition: on-failure
@@ -185,6 +206,13 @@ services:
     image: frappe/erpnext:${ERPNEXT_VERSION:-v15.95.0}
     networks:
       - frappe_network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis-queue:
+        condition: service_started
+      redis-cache:
+        condition: service_started
     deploy:
       restart_policy:
         condition: on-failure
